@@ -1,11 +1,16 @@
 use std::sync::{Arc, RwLock};
 
+#[cfg(feature = "local-inference")]
+use super::local_inference::LocalInferenceProvider;
+
+#[cfg(feature = "bedrock-provider")]
+use super::bedrock::BedrockProvider;
+
 use super::{
     anthropic::AnthropicProvider,
     avian::AvianProvider,
     azure::AzureProvider,
     base::{Provider, ProviderMetadata},
-    bedrock::BedrockProvider,
     chatgpt_codex::ChatGptCodexProvider,
     claude_acp::ClaudeAcpProvider,
     claude_code::ClaudeCodeProvider,
@@ -19,7 +24,6 @@ use super::{
     google::GoogleProvider,
     lead_worker::LeadWorkerProvider,
     litellm::LiteLLMProvider,
-    local_inference::LocalInferenceProvider,
     ollama::OllamaProvider,
     openai::OpenAiProvider,
     openrouter::OpenRouterProvider,
@@ -30,6 +34,7 @@ use super::{
     venice::VeniceProvider,
     xai::XaiProvider,
 };
+
 use crate::config::ExtensionConfig;
 use crate::model::ModelConfig;
 use crate::providers::base::ProviderType;
@@ -51,7 +56,9 @@ async fn init_registry() -> RwLock<ProviderRegistry> {
         registry.register::<AnthropicProvider>(true);
         registry.register::<AvianProvider>(false);
         registry.register::<AzureProvider>(false);
+        #[cfg(feature = "bedrock-provider")]
         registry.register::<BedrockProvider>(false);
+        #[cfg(feature = "local-inference")]
         registry.register::<LocalInferenceProvider>(false);
         registry.register::<ChatGptCodexProvider>(true);
         registry.register::<ClaudeAcpProvider>(false);

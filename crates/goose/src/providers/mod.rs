@@ -5,6 +5,8 @@ pub mod avian;
 pub mod azure;
 pub mod azureauth;
 pub mod base;
+
+#[cfg(feature = "bedrock-provider")]
 pub mod bedrock;
 pub mod canonical;
 pub mod catalog;
@@ -27,6 +29,7 @@ pub mod google;
 mod init;
 pub mod lead_worker;
 pub mod litellm;
+#[cfg(feature = "local-inference")]
 pub mod local_inference;
 pub mod oauth;
 pub mod ollama;

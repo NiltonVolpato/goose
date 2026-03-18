@@ -97,3 +97,8 @@ opentelemetry_sdk = { git = "https://github.com/open-telemetry/opentelemetry-rus
 opentelemetry-appender-tracing = { git = "https://github.com/open-telemetry/opentelemetry-rust", rev = "345cd74a" }
 opentelemetry-otlp = { git = "https://github.com/open-telemetry/opentelemetry-rust", rev = "345cd74a" }
 opentelemetry-stdout = { git = "https://github.com/open-telemetry/opentelemetry-rust", rev = "345cd74a" }
+
+[profile.release]
+lto = true
+opt-level = "z"
+strip = true

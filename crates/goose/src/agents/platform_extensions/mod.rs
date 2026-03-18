@@ -1,3 +1,4 @@
+#[cfg(feature = "analyze-extension")]
 pub mod analyze;
 pub mod apps;
 pub mod chatrecall;
@@ -28,6 +29,7 @@ pub static PLATFORM_EXTENSIONS: Lazy<HashMap<&'static str, PlatformExtensionDef>
     || {
         let mut map = HashMap::new();
 
+        #[cfg(feature = "analyze-extension")]
         map.insert(
             analyze::EXTENSION_NAME,
             PlatformExtensionDef {

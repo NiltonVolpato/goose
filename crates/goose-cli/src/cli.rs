@@ -1473,6 +1473,7 @@ async fn handle_term_subcommand(command: TermCommand) -> Result<()> {
     }
 }
 
+#[cfg(feature = "local-inference")]
 async fn handle_local_models_command(command: LocalModelsCommand) -> Result<()> {
     use goose::providers::local_inference::hf_models;
     use goose::providers::local_inference::local_model_registry::{
@@ -1759,7 +1760,12 @@ pub async fn cli() -> anyhow::Result<()> {
         }
         Some(Command::Recipe { command }) => handle_recipe_subcommand(command),
         Some(Command::Term { command }) => handle_term_subcommand(command).await,
-        Some(Command::LocalModels { command }) => handle_local_models_command(command).await,
+        Some(Command::LocalModels { command }) => {
+            #[cfg(feature = "local-inference")]
+            return handle_local_models_command(command).await;
+            #[cfg(not(feature = "local-inference"))]
+            panic!("local-inference feature is not enabled");
+        }
         Some(Command::ValidateExtensions { file }) => {
             use goose::agents::validate_extensions::validate_bundled_extensions;
             match validate_bundled_extensions(&file) {
